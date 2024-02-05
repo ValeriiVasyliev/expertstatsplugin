@@ -50,7 +50,7 @@ class wpcable_api_calls {
 	/**
 	 * Initializes the API handler by loading the previous auth_token from the DB.
 	 */
-	private function __construct() {
+	public function __construct() {
 		$this->get_auth_token();
 		$this->tasks_stop_at_page = (int) get_option( 'wpcable_tasks_stop_at_page', 0 );
 	}
@@ -204,7 +204,7 @@ class wpcable_api_calls {
 	 * @param  array  $headers Optional HTTP headers.
 	 * @return array
 	 */
-	private function request( $url, $args = [], $method = 'POST', $headers = [] ) {
+	protected function request( $url, $args = [], $method = 'POST', $headers = [] ) {
 		$response_body = false;
 
 		set_time_limit( 300 );
