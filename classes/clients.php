@@ -36,13 +36,13 @@ class wpcable_clients {
 		// get first and last task if no date is set
 		if ( $from_month == '' && $from_year == '' ) {
 			$get_first_task = $wpcable_stats->get_first_task();
-			$firstdate      = $get_first_task['dateadded'];
+			$firstdate      = $get_first_task['dateadded'] ?? strtotime(date('Y-m-d', strtotime('-1 year')));
 		} else {
 			$firstdate = $from_year . '-' . $from_month . '-01';
 		}
 		if ( $to_month == '' && $to_year == '' ) {
 			$get_last_task = $wpcable_stats->get_last_task();
-			$lastdate      = $get_last_task['dateadded'];
+			$lastdate      = $get_last_task['dateadded'] ??  strtotime(date('Y-m-d', strtotime('last day of this month')));
 		} else {
 			$lastdate = $to_year . '-' . $to_month . '-' . date( 't', strtotime( $to_year . '-' . $to_month . '-01 23:59:59' ) );
 		}

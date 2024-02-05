@@ -41,12 +41,27 @@ function codeable_transcactions_stats_cb() {
 	$get_first_task = $wpcable_stats->get_first_task();
 	$get_last_task  = $wpcable_stats->get_last_task();
 
-	$first_day   = date( 'd', strtotime( $get_first_task['dateadded'] ) );
-	$first_month = date( 'm', strtotime( $get_first_task['dateadded'] ) );
-	$first_year  = date( 'Y', strtotime( $get_first_task['dateadded'] ) );
-	$last_day    = date( 'd', strtotime( $get_last_task['dateadded'] ) );
-	$last_month  = date( 'm', strtotime( $get_last_task['dateadded'] ) );
-	$last_year   = date( 'Y', strtotime( $get_last_task['dateadded'] ) );
+    if ($get_first_task !== false && isset($get_first_task['dateadded'] )) {
+        $first_day   = date( 'd', strtotime( $get_first_task['dateadded'] ) ) ;
+        $first_month = date( 'm', strtotime( $get_first_task['dateadded'] ) );
+        $first_year  = date( 'Y', strtotime( $get_first_task['dateadded'] ) );
+    } else {
+        // get first day of the year ago
+        $first_day   = '01';
+        $first_month = date('m', strtotime('first day of last year'));
+        $first_year  = date('Y', strtotime('first day of last year'));
+    }
+
+    if ($get_last_task !== false && isset($get_last_task['dateadded'] )) {
+        $last_day    = date( 'd', strtotime( $get_last_task['dateadded'] ) );
+        $last_month  = date( 'm', strtotime( $get_last_task['dateadded'] ) );
+        $last_year   = date( 'Y', strtotime( $get_last_task['dateadded'] ) );
+    } else {
+        // get last day of the current month
+        $last_day   = date('t');
+        $last_month = date('m');
+        $last_year  = date('Y');
+    }
 
 	if ( ! isset( $_GET['date_from'] ) ) {
 		$_GET['date_from'] = $first_year . '-' . $first_month;
@@ -124,8 +139,8 @@ function codeable_transcactions_stats_cb() {
 
 			<div class="box user-info">
 				<div class="avatar">
-					<img class="round" src="<?php echo $account_details['avatar']['large_url']; ?>"/>
-					<div class="rating" data-score="<?php echo $account_details['stats']['avg_rating']; ?>"></div>
+					<img class="round" src="<?php echo esc_url($account_details['avatar']['large_url']); ?>"/>
+					<div class="rating" data-score="<?php echo esc_attr($account_details['stats']['avg_rating']); ?>"></div>
 				</div>
 				<div class="details">
 					<div class="codeable-logo">
